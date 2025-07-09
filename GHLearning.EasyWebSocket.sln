@@ -1,0 +1,51 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36127.28
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GHLearning.EasyWebSocket.WebSocketServer", "src\GHLearning.EasyWebSocket.WebSocketServer\GHLearning.EasyWebSocket.WebSocketServer.csproj", "{AB53257D-9595-4894-B0A1-4162E4D2BEE6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GHLearning.EasyWebSocket.Core", "src\GHLearning.EasyWebSocket.Core\GHLearning.EasyWebSocket.Core.csproj", "{7618F4D6-AFF4-486E-A48B-22F29146A772}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GHLearning.EasyWebSocket.Infrastructure", "src\GHLearning.EasyWebSocket.Infrastructure\GHLearning.EasyWebSocket.Infrastructure.csproj", "{3056F40B-0632-44B2-8911-C262AF380B56}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GHLearning.EasyWebSocket.Application", "src\GHLearning.EasyWebSocket.Application\GHLearning.EasyWebSocket.Application.csproj", "{B5BE9895-3529-4EF2-B44E-ECE093D0A703}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AB53257D-9595-4894-B0A1-4162E4D2BEE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB53257D-9595-4894-B0A1-4162E4D2BEE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB53257D-9595-4894-B0A1-4162E4D2BEE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB53257D-9595-4894-B0A1-4162E4D2BEE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7618F4D6-AFF4-486E-A48B-22F29146A772}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7618F4D6-AFF4-486E-A48B-22F29146A772}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7618F4D6-AFF4-486E-A48B-22F29146A772}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7618F4D6-AFF4-486E-A48B-22F29146A772}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3056F40B-0632-44B2-8911-C262AF380B56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3056F40B-0632-44B2-8911-C262AF380B56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3056F40B-0632-44B2-8911-C262AF380B56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3056F40B-0632-44B2-8911-C262AF380B56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5BE9895-3529-4EF2-B44E-ECE093D0A703}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5BE9895-3529-4EF2-B44E-ECE093D0A703}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5BE9895-3529-4EF2-B44E-ECE093D0A703}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5BE9895-3529-4EF2-B44E-ECE093D0A703}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{AB53257D-9595-4894-B0A1-4162E4D2BEE6} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{7618F4D6-AFF4-486E-A48B-22F29146A772} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{3056F40B-0632-44B2-8911-C262AF380B56} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{B5BE9895-3529-4EF2-B44E-ECE093D0A703} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8684A83F-9B51-47FC-997F-C20D84EC3E19}
+	EndGlobalSection
+EndGlobal
