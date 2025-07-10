@@ -1,6 +1,4 @@
 ﻿using GHLearning.EasyWebSocket.Core.Users;
-using Microsoft.Extensions.Hosting;
-using GHLearning.EasyWebSocket.Infrastructure.Users;
 
 namespace GHLearning.EasyWebSocket.WebSocketServer.BackgroundServices;
 
