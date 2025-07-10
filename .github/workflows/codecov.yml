@@ -1,0 +1,40 @@
+﻿name: Code Coverage Report
+on:
+  push:
+    branches:
+      - "*"
+
+jobs:
+  coverage-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Set up .NET SDK
+      - name: Set up .NET SDK
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: 9.0.x
+
+      # Restore dependencies
+      - name: Restore dependencies
+        run: dotnet restore
+
+      # Build the project
+      - name: Build project
+        run: dotnet build --configuration Release
+
+      # Run tests and collect code coverage
+      - name: Run tests with code coverage
+        run: |
+          dotnet test --configuration Release --collect:"XPlat Code Coverage"
+
+      # Upload code coverage report
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+            token: ${{ secrets.CODECOV_TOKEN }}
+            slug: gordon-hung/GHLearning-EasyWebSocket
