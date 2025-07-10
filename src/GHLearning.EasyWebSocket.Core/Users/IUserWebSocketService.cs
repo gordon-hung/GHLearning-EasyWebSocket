@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using GHLearning.EasyWebSocket.Core.Users.Models;
+﻿using GHLearning.EasyWebSocket.Core.Users.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace GHLearning.EasyWebSocket.Core.Users;
 
@@ -53,4 +53,3 @@ public interface IUserWebSocketService
 	/// <returns></returns>
 	Task MonitorConnectionsAsync(CancellationToken cancellationToken = default);
 }
-

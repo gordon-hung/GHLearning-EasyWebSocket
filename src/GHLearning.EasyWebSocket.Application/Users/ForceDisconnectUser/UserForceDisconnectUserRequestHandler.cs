@@ -2,6 +2,7 @@
 using MediatR;
 
 namespace GHLearning.EasyWebSocket.Application.Users.ForceDisconnectUser;
+
 internal class UserForceDisconnectUserRequestHandler(
 	IUserWebSocketService userWebSocket) : IRequestHandler<UserForceDisconnectUserRequest>
 {

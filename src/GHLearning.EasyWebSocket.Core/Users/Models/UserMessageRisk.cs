@@ -1,4 +1,5 @@
 ﻿namespace GHLearning.EasyWebSocket.Core.Users.Models;
+
 public enum UserMessageRisk
 {
 	Low = 0,

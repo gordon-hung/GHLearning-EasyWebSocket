@@ -9,10 +9,14 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.7" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.7" />
+    <PackageReference Include="OpenTelemetry.Api" Version="1.12.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.12.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GHLearning.EasyWebSocket.Application\GHLearning.EasyWebSocket.Application.csproj" />
     <ProjectReference Include="..\GHLearning.EasyWebSocket.Core\GHLearning.EasyWebSocket.Core.csproj" />
+    <ProjectReference Include="..\GHLearning.EasyWebSocket.SharedKernel\GHLearning.EasyWebSocket.SharedKernel.csproj" />
   </ItemGroup>
 
 </Project>

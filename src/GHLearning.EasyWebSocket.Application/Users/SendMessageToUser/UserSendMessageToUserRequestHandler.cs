@@ -2,6 +2,7 @@
 using MediatR;
 
 namespace GHLearning.EasyWebSocket.Application.Users.SendMessageToUser;
+
 internal class UserSendMessageToUserRequestHandler(
 	IUserWebSocketService userWebSocket) : IRequestHandler<UserSendMessageToUserRequest>
 {

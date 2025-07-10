@@ -1,8 +1,8 @@
 ﻿using GHLearning.EasyWebSocket.Application.Users.ForceDisconnectAllUsers;
 using GHLearning.EasyWebSocket.Application.Users.ForceDisconnectUser;
+using GHLearning.EasyWebSocket.Application.Users.Login;
 using GHLearning.EasyWebSocket.Application.Users.SendMessageToAll;
 using GHLearning.EasyWebSocket.Application.Users.SendMessageToUser;
-using GHLearning.EasyWebSocket.Core.Users;
 using GHLearning.EasyWebSocket.WebSocketServer.ViewModels.Users;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -62,4 +62,14 @@ public class UsersController(IMediator mediator) : ControllerBase
 				Risk: source.Risk,
 				Message: source.Message),
 			cancellationToken: HttpContext.RequestAborted);
+
+	/// <summary>
+	/// Users the login asynchronous.
+	/// </summary>
+	/// <param name="request">The request.</param>
+	/// <returns></returns>
+	[HttpPost("login")]
+	public Task<UserLoginResponse> UserLoginAsync(
+		[FromBody] UserLoginRequest request)
+		=> mediator.Send(request, HttpContext.RequestAborted);
 }
