@@ -145,4 +145,53 @@ public class UserConnectionTests
 			Arg.Any<CancellationToken>()
 		);
 	}
+
+	[Fact]
+	public async Task RemoveConnectionAsync_ShouldHandleException_WhenWebSocketThrows()
+	{
+		// Arrange
+		var userId = "user_exception";
+		var connection = new UserConnection(userId);
+		var wsId = Guid.NewGuid();
+		var ws = Substitute.For<WebSocket>();
+		ws.State.Returns(WebSocketState.Open);
+		ws.CloseAsync(
+			Arg.Any<WebSocketCloseStatus>(),
+			Arg.Any<string>(),
+			Arg.Any<CancellationToken>()
+		).Returns<Task>(x => throw new Exception("Close failed"));
+		connection.AddConnection(wsId, ws);
+
+		// Act
+		var exception = await Record.ExceptionAsync(() => connection.RemoveConnectionAsync(wsId));
+
+		// Assert
+		Assert.Null(exception); // 應被 try-catch 吃掉
+		ws.Received(1).Dispose();
+		Assert.DoesNotContain(wsId, connection.GetWebSocketIds());
+	}
+
+	[Fact]
+	public async Task SendMessageAsync_ShouldHandleException_WhenSendAsyncThrows()
+	{
+		// Arrange
+		var userId = "user_exception2";
+		var connection = new UserConnection(userId);
+		var wsId = Guid.NewGuid();
+		var ws = Substitute.For<WebSocket>();
+		ws.State.Returns(WebSocketState.Open);
+		ws.SendAsync(
+			Arg.Any<ArraySegment<byte>>(),
+			Arg.Any<WebSocketMessageType>(),
+			Arg.Any<bool>(),
+			Arg.Any<CancellationToken>()
+		).Returns<Task>(x => throw new Exception("Send failed"));
+		connection.AddConnection(wsId, ws);
+
+		// Act
+		var exception = await Record.ExceptionAsync(() => connection.SendMessageAsync(wsId, "test"));
+
+		// Assert
+		Assert.Null(exception); // 應被 try-catch 吃掉
+	}
 }

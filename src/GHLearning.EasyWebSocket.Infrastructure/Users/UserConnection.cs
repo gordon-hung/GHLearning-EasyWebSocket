@@ -32,8 +32,6 @@ public class UserConnection(string userId) : IUserConnection
 				{
 					await webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "強制下線", CancellationToken.None).ConfigureAwait(false);
 				}
-
-				_connections.TryRemove(webSocketId, out _);
 			}
 			catch (Exception ex)
 			{
@@ -42,6 +40,7 @@ public class UserConnection(string userId) : IUserConnection
 			}
 			finally
 			{
+				_connections.TryRemove(webSocketId, out _);
 				webSocket.Dispose();
 			}
 		}
