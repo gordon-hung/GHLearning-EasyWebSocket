@@ -148,4 +148,79 @@ public class UserConnectionManagerTests
 
 		await userConnection.Received(1).RemoveConnectionAsync(wsId);
 	}
+
+	[Fact]
+	public async Task SendMessageToAllAsync_ShouldCatchException_WhenSendFails()
+	{
+		var userConnection = Substitute.For<IUserConnection>();
+		var userId = "user_exception";
+		var wsId = Guid.NewGuid();
+		userConnection.GetWebSocketIds().Returns([wsId]);
+		userConnection.SendMessageAsync(wsId, Arg.Any<string>())
+			.Returns<Task>(x => throw new Exception("Send failed"));
+		_timeProvider.GetUtcNow().Returns(DateTimeOffset.UtcNow);
+
+		// 直接注入到 _userConnections
+		var field = typeof(UserConnectionManager).GetField("_userConnections", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+		var dict = (System.Collections.Concurrent.ConcurrentDictionary<string, IUserConnection>)field!.GetValue(_manager)!;
+		dict[userId] = userConnection;
+
+		var ex = await Record.ExceptionAsync(() => _manager.SendMessageToAllAsync(UserMessageRisk.Low, "msg"));
+		Assert.Null(ex); // 應被 try-catch 吃掉
+	}
+
+	[Fact]
+	public async Task SendMessageToUserAsync_ShouldCatchException_WhenSendFails()
+	{
+		var userConnection = Substitute.For<IUserConnection>();
+		var userId = "user_exception2";
+		var wsId = Guid.NewGuid();
+		userConnection.GetWebSocketIds().Returns([wsId]);
+		userConnection.SendMessageAsync(wsId, Arg.Any<string>())
+			.Returns<Task>(x => throw new Exception("Send failed"));
+		_timeProvider.GetUtcNow().Returns(DateTimeOffset.UtcNow);
+
+		var field = typeof(UserConnectionManager).GetField("_userConnections", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+		var dict = (System.Collections.Concurrent.ConcurrentDictionary<string, IUserConnection>)field!.GetValue(_manager)!;
+		dict[userId] = userConnection;
+
+		var ex = await Record.ExceptionAsync(() => _manager.SendMessageToUserAsync(userId, UserMessageRisk.Low, "msg"));
+		Assert.Null(ex);
+	}
+
+	[Fact]
+	public async Task ForceDisconnectUserAsync_ShouldCatchException_WhenRemoveFails()
+	{
+		var userConnection = Substitute.For<IUserConnection>();
+		var userId = "user_exception3";
+		var wsId = Guid.NewGuid();
+		userConnection.GetWebSocketIds().Returns([wsId]);
+		userConnection.RemoveConnectionAsync(wsId)
+			.Returns<Task>(x => throw new Exception("Remove failed"));
+
+		var field = typeof(UserConnectionManager).GetField("_userConnections", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+		var dict = (System.Collections.Concurrent.ConcurrentDictionary<string, IUserConnection>)field!.GetValue(_manager)!;
+		dict[userId] = userConnection;
+
+		var ex = await Record.ExceptionAsync(() => _manager.ForceDisconnectUserAsync(userId));
+		Assert.Null(ex);
+	}
+
+	[Fact]
+	public async Task ForceDisconnectAllUsersAsync_ShouldCatchException_WhenForceDisconnectUserFails()
+	{
+		var userConnection = Substitute.For<IUserConnection>();
+		var userId = "user_exception4";
+		var wsId = Guid.NewGuid();
+		userConnection.GetWebSocketIds().Returns([wsId]);
+		userConnection.RemoveConnectionAsync(wsId)
+			.Returns<Task>(x => throw new Exception("Remove failed"));
+
+		var field = typeof(UserConnectionManager).GetField("_userConnections", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+		var dict = (System.Collections.Concurrent.ConcurrentDictionary<string, IUserConnection>)field!.GetValue(_manager)!;
+		dict[userId] = userConnection;
+
+		var ex = await Record.ExceptionAsync(() => _manager.ForceDisconnectAllUsersAsync());
+		Assert.Null(ex);
+	}
 }
