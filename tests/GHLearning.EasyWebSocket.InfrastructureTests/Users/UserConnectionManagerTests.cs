@@ -223,4 +223,71 @@ public class UserConnectionManagerTests
 		var ex = await Record.ExceptionAsync(() => _manager.ForceDisconnectAllUsersAsync());
 		Assert.Null(ex);
 	}
+
+	[Fact]
+	public async Task MonitorConnectionsAsync_ShouldSendPingAndRemoveDisconnected()
+	{
+		var userConnection = Substitute.For<IUserConnection>();
+		var userId = "user_monitor";
+		var wsId = Guid.NewGuid();
+		userConnection.GetWebSocketIds().Returns([wsId]);
+		userConnection.IsConnected(wsId).Returns(true);
+		_timeProvider.GetUtcNow().Returns(DateTimeOffset.UtcNow);
+
+		var field = typeof(UserConnectionManager).GetField("_userConnections", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+		var dict = new System.Collections.Concurrent.ConcurrentDictionary<string, IUserConnection>();
+		dict[userId] = userConnection;
+		field!.SetValue(_manager, dict);
+
+		using var cts = new CancellationTokenSource();
+		cts.CancelAfter(TimeSpan.FromSeconds(5));
+
+		_ = await Assert.ThrowsAsync<TaskCanceledException>(() => _manager.MonitorConnectionsAsync(cts.Token));
+	}
+
+	[Fact]
+	public async Task MonitorConnectionsAsync_ShouldRemoveConnection_WhenNotConnected()
+	{
+		var userConnection = Substitute.For<IUserConnection>();
+		var userId = "user_monitor2";
+		var wsId = Guid.NewGuid();
+		userConnection.GetWebSocketIds().Returns([wsId]);
+		userConnection.IsConnected(wsId).Returns(false);
+		_timeProvider.GetUtcNow().Returns(DateTimeOffset.UtcNow);
+
+		var field = typeof(UserConnectionManager).GetField("_userConnections", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+		var dict = new System.Collections.Concurrent.ConcurrentDictionary<string, IUserConnection>();
+		dict[userId] = userConnection;
+		field!.SetValue(_manager, dict);
+
+		using var cts = new CancellationTokenSource();
+		cts.CancelAfter(TimeSpan.FromSeconds(5));
+
+		_ = await Assert.ThrowsAsync<TaskCanceledException>(() => _manager.MonitorConnectionsAsync(cts.Token));
+
+		await userConnection.Received().RemoveConnectionAsync(wsId);
+	}
+
+	[Fact]
+	public async Task MonitorConnectionsAsync_ShouldCatchException_WhenSendOrRemoveFails()
+	{
+		var userConnection = Substitute.For<IUserConnection>();
+		var userId = "user_monitor3";
+		var wsId = Guid.NewGuid();
+		userConnection.GetWebSocketIds().Returns([wsId]);
+		userConnection.IsConnected(wsId).Returns(true);
+		userConnection.SendMessageAsync(wsId, Arg.Any<string>())
+			.Returns<Task>(x => throw new Exception("Send failed"));
+		_timeProvider.GetUtcNow().Returns(DateTimeOffset.UtcNow);
+
+		var field = typeof(UserConnectionManager).GetField("_userConnections", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+		var dict = new System.Collections.Concurrent.ConcurrentDictionary<string, IUserConnection>();
+		dict[userId] = userConnection;
+		field!.SetValue(_manager, dict);
+
+		using var cts = new CancellationTokenSource();
+		cts.CancelAfter(TimeSpan.FromSeconds(5));
+
+		_ = await Assert.ThrowsAsync<TaskCanceledException>(() => _manager.MonitorConnectionsAsync(cts.Token));
+	}
 }
