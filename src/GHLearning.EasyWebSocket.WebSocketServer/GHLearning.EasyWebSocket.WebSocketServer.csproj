@@ -29,6 +29,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\GHLearning.EasyWebSocket.Application\GHLearning.EasyWebSocket.Application.csproj" />
 		<ProjectReference Include="..\GHLearning.EasyWebSocket.Infrastructure\GHLearning.EasyWebSocket.Infrastructure.csproj" />
+		<ProjectReference Include="..\GHLearning.EasyWebSocket.SharedKernel\GHLearning.EasyWebSocket.SharedKernel.csproj" />
 	</ItemGroup>
 
 </Project>

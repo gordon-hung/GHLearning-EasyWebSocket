@@ -19,6 +19,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{FE376417
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GHLearning.EasyWebSocket.ApplicationTests", "tests\GHLearning.EasyWebSocket.ApplicationTests\GHLearning.EasyWebSocket.ApplicationTests.csproj", "{0DEC7BEE-84D0-4A5A-8A5C-90C6883B7859}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GHLearning.EasyWebSocket.InfrastructureTests", "tests\GHLearning.EasyWebSocket.InfrastructureTests\GHLearning.EasyWebSocket.InfrastructureTests.csproj", "{FD507DF5-548A-B2AF-591D-62E2EE384658}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +51,10 @@ Global
 		{0DEC7BEE-84D0-4A5A-8A5C-90C6883B7859}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0DEC7BEE-84D0-4A5A-8A5C-90C6883B7859}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0DEC7BEE-84D0-4A5A-8A5C-90C6883B7859}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD507DF5-548A-B2AF-591D-62E2EE384658}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD507DF5-548A-B2AF-591D-62E2EE384658}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD507DF5-548A-B2AF-591D-62E2EE384658}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD507DF5-548A-B2AF-591D-62E2EE384658}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,6 +66,7 @@ Global
 		{B5BE9895-3529-4EF2-B44E-ECE093D0A703} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{E5CCDD1A-6021-56A7-0AF2-C66864EC84C5} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{0DEC7BEE-84D0-4A5A-8A5C-90C6883B7859} = {FE376417-4433-42B8-841C-3E1EEE9834A2}
+		{FD507DF5-548A-B2AF-591D-62E2EE384658} = {FE376417-4433-42B8-841C-3E1EEE9834A2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8684A83F-9B51-47FC-997F-C20D84EC3E19}
