@@ -4,6 +4,7 @@ using GHLearning.EasyWebSocket.Infrastructure.Users;
 using NSubstitute;
 
 namespace GHLearning.EasyWebSocket.InfrastructureTests.Users;
+
 public class UserConnectionTests
 {
 	[Fact]

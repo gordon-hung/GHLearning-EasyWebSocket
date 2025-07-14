@@ -3,6 +3,7 @@ using GHLearning.EasyWebSocket.Core.Users;
 using NSubstitute;
 
 namespace GHLearning.EasyWebSocket.ApplicationTests.Users.ForceDisconnectUser;
+
 public class UserForceDisconnectUserRequestHandlerTests
 {
 	[Fact]
@@ -18,7 +19,7 @@ public class UserForceDisconnectUserRequestHandlerTests
 			fakeUserWebSocketService);
 
 		// Act
-		await handler.Handle(request, CancellationToken.None);
+		await handler.Handle(request, CancellationToken.None).ConfigureAwait(false);
 
 		// Assert
 		_ = fakeUserWebSocketService

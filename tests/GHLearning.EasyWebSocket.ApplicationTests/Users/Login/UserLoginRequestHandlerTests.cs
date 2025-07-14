@@ -3,6 +3,7 @@ using GHLearning.EasyWebSocket.SharedKernel.Abstractions.Authentication;
 using NSubstitute;
 
 namespace GHLearning.EasyWebSocket.ApplicationTests.Users.Login;
+
 public class UserLoginRequestHandlerTests
 {
 	[Fact]
@@ -25,7 +26,7 @@ public class UserLoginRequestHandlerTests
 			.Returns(token);
 
 		// Act
-		var actual = await handler.Handle(request, CancellationToken.None);
+		var actual = await handler.Handle(request, CancellationToken.None).ConfigureAwait(false);
 
 		// Assert
 		Assert.NotNull(actual);

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using NSubstitute;
 
 namespace GHLearning.EasyWebSocket.InfrastructureTests.Users;
+
 public class UserWebSocketServiceTests
 {
 	private readonly IUserConnectionManager _connectionManager = Substitute.For<IUserConnectionManager>();

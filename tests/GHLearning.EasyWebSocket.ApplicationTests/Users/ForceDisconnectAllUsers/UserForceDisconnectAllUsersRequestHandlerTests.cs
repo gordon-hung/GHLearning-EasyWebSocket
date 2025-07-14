@@ -16,7 +16,7 @@ public class UserForceDisconnectAllUsersRequestHandlerTests
 			fakeUserWebSocketService);
 
 		// Act
-		await handler.Handle(new(), CancellationToken.None);
+		await handler.Handle(new(), CancellationToken.None).ConfigureAwait(false);
 
 		// Assert
 		_ = fakeUserWebSocketService

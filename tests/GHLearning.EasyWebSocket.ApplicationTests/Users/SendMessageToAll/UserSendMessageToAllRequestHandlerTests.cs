@@ -3,6 +3,7 @@ using GHLearning.EasyWebSocket.Core.Users;
 using NSubstitute;
 
 namespace GHLearning.EasyWebSocket.ApplicationTests.Users.SendMessageToAll;
+
 public class UserSendMessageToAllRequestHandlerTests
 {
 	[Fact]
@@ -19,7 +20,7 @@ public class UserSendMessageToAllRequestHandlerTests
 			fakeUserWebSocketService);
 
 		// Act
-		await handler.Handle(request, CancellationToken.None);
+		await handler.Handle(request, CancellationToken.None).ConfigureAwait(false);
 
 		// Assert
 		_ = fakeUserWebSocketService

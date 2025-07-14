@@ -9,16 +9,6 @@ namespace GHLearning.EasyWebSocket.InfrastructureTests.Authentication;
 
 public class TokenProviderTests
 {
-	private static TokenOptions CreateTokenOptions() => new()
-	{
-		Issuer = "TestIssuer",
-		Audience = "TestAudience",
-		SecurityKey = "YRTW01NNZJGJGIWW6I7E2MJV4LN0SEzi",
-		ExpirationMinutes = 60
-	};
-
-	private static IOptions<TokenOptions> CreateOptions() => Options.Create(CreateTokenOptions());
-
 	[Fact]
 	public void GenerateToken_ShouldReturnValidJwt()
 	{
@@ -100,4 +90,14 @@ public class TokenProviderTests
 		// Assert
 		Assert.Contains("JWT is not well formed", result.Message);
 	}
+
+	private static TokenOptions CreateTokenOptions() => new()
+	{
+		Issuer = "TestIssuer",
+		Audience = "TestAudience",
+		SecurityKey = "YRTW01NNZJGJGIWW6I7E2MJV4LN0SEzi",
+		ExpirationMinutes = 60
+	};
+
+	private static IOptions<TokenOptions> CreateOptions() => Options.Create(CreateTokenOptions());
 }

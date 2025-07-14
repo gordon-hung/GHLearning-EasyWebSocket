@@ -24,5 +24,7 @@ public static class ServiceCollectionExtensions
 		// 註冊多用戶的連線管理
 		.AddSingleton<IUserConnectionManager, UserConnectionManager>()
 		// 註冊WebSocket服務相關的操作
-		.AddSingleton<IUserWebSocketService, UserWebSocketService>();
+		.AddSingleton<IUserWebSocketService, UserWebSocketService>()
+		// 註冊用戶接收消息處理器
+		.AddSingleton<IUserReceiveMessagesHandler, UserReceiveMessagesHandler>();
 }

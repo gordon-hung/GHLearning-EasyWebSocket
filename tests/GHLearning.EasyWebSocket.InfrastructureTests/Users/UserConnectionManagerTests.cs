@@ -1,5 +1,4 @@
-﻿using System.Buffers.Text;
-using System.Net;
+﻿using System.Net;
 using GHLearning.EasyWebSocket.Core.Users;
 using GHLearning.EasyWebSocket.Core.Users.Models;
 using GHLearning.EasyWebSocket.Infrastructure.Users;
@@ -11,17 +10,18 @@ using Microsoft.Extensions.Primitives;
 using NSubstitute;
 
 namespace GHLearning.EasyWebSocket.InfrastructureTests.Users;
+
 public class UserConnectionManagerTests
 {
 	private readonly ILogger<UserConnectionManager> _logger = NullLogger<UserConnectionManager>.Instance;
 	private readonly ITokenProvider _tokenProvider = Substitute.For<ITokenProvider>();
+	private readonly IUserReceiveMessagesHandler _userReceiveMessagesHandler = Substitute.For<IUserReceiveMessagesHandler>();
 	private readonly TimeProvider _timeProvider = Substitute.For<TimeProvider>();
-	private readonly System.Diagnostics.ActivitySource _activitySource = new("test");
 	private readonly UserConnectionManager _manager;
 
 	public UserConnectionManagerTests()
 	{
-		_manager = new UserConnectionManager(_logger, _tokenProvider, _timeProvider, _activitySource);
+		_manager = new UserConnectionManager(_logger, _tokenProvider, _timeProvider, _userReceiveMessagesHandler);
 	}
 
 	[Fact]

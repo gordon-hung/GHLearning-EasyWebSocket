@@ -1,8 +1,5 @@
 ﻿using System.Collections.Concurrent;
-using System.Diagnostics;
 using System.Net;
-using System.Net.WebSockets;
-using System.Text;
 using System.Text.Json;
 using GHLearning.EasyWebSocket.Core.Users;
 using GHLearning.EasyWebSocket.Core.Users.Models;
@@ -16,7 +13,7 @@ public class UserConnectionManager(
 	ILogger<UserConnectionManager> logger,
 	ITokenProvider tokenProvider,
 	TimeProvider timeProvider,
-	ActivitySource activitySource) : IUserConnectionManager
+	IUserReceiveMessagesHandler receiveMessagesHandler) : IUserConnectionManager
 {
 	private readonly ConcurrentDictionary<string, IUserConnection> _userConnections = new();
 
@@ -53,7 +50,7 @@ public class UserConnectionManager(
 
 		logger.LogInformation("用戶 {userId} 連線，WebSocket ID: {webSocketId}", userId, webSocketId);
 
-		await ReceiveMessagesAsync(webSocket, userId, webSocketId).ConfigureAwait(false);
+		await receiveMessagesHandler.ReceiveMessagesAsync(userId, webSocketId, webSocket).ConfigureAwait(false);
 	}
 
 	public async Task SendMessageToAllAsync(UserMessageRisk risk, string message, CancellationToken cancellationToken = default)
@@ -177,12 +174,14 @@ public class UserConnectionManager(
 							{
 								// 如果連線正常，發送 "Ping" 訊息
 								await userConnection.SendMessageAsync(webSocketId, JsonSerializer.Serialize(userMessage)).ConfigureAwait(false);
+								logger.LogInformation("用戶 {UserId} 的 WebSocket ID {WebSocketId} 仍然連線中", userId, webSocketId);
 								activeConnections++;
 							}
 							else
 							{
 								// 如果 WebSocket 連線斷開，則移除該連線
 								await userConnection.RemoveConnectionAsync(webSocketId).ConfigureAwait(false);
+								logger.LogInformation("用戶 {UserId} 的 WebSocket ID {WebSocketId} 已斷開連線", userId, webSocketId);
 							}
 						}
 						catch (Exception ex)
@@ -196,52 +195,6 @@ public class UserConnectionManager(
 			logger.LogInformation("當前活躍 WebSocket 連線數: {Quantity}", activeConnections);
 
 			await Task.Delay(checkInterval, cancellationToken).ConfigureAwait(false);
-		}
-	}
-
-	private async Task ReceiveMessagesAsync(WebSocket webSocket, string userId, Guid webSocketId)
-	{
-		using var activity = activitySource.StartActivity("WebSocket Receive");
-		activity?.SetTag("websocket.namespace", typeof(UserWebSocketService).Namespace);
-		activity?.SetTag("websocket.id", webSocketId.ToString());
-
-		var buffer = new byte[1024 * 8];
-		var cancellationToken = CancellationToken.None;
-
-		try
-		{
-			while (webSocket.State == WebSocketState.Open)
-			{
-				var result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), cancellationToken).ConfigureAwait(false);
-				if (result.MessageType == WebSocketMessageType.Close)
-				{
-					try
-					{
-						await webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closed by user", CancellationToken.None).ConfigureAwait(false);
-						if (_userConnections.TryGetValue(userId, out var userConnection))
-						{
-							await userConnection.RemoveConnectionAsync(webSocketId).ConfigureAwait(false);
-						}
-
-						logger.LogInformation("用戶 {UserId} 的 WebSocket ID: {WebSocketId} 已成功關閉", userId, webSocketId);
-					}
-					catch (Exception ex)
-					{
-						logger.LogError(ex, "用戶 {UserId} WebSocket ID: {WebSocketId} 關閉錯誤", userId, webSocketId);
-					}
-
-					break;
-				}
-				else
-				{
-					string message = Encoding.UTF8.GetString(buffer, 0, result.Count);
-					logger.LogInformation("收到用戶 {UserId} WebSocket ID: {WebSocketId} 訊息: {Message}", userId, webSocketId, message);
-				}
-			}
-		}
-		catch (Exception ex)
-		{
-			logger.LogError(ex, "WebSocket 連線錯誤，用戶 {UserId} WebSocket ID: {WebSocketId}", userId, webSocketId);
 		}
 	}
 }
